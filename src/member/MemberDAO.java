@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MemberDAO {
 	// insertMember() 만들기
@@ -130,9 +132,7 @@ public class MemberDAO {
 			else {
 //				System.out.println("아이디 없음");
 				check = -1; // 아이디없음
-
 			}
-
 		}
 		catch (Exception e) {
 			// 예외를 잡아서 처리
@@ -142,6 +142,100 @@ public class MemberDAO {
 			// 예외상관없이 마무리 작업
 		}
 		return check;
+	}
+
+	// updateMember()
+	public void updateMember(MemberBean mb) {
+		try {
+			// 1단계 드라이버 불러오기
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// 2단계 디비연결 jspdb1 jspid jsppass
+			String dbUrl = "jdbc:mysql://localhost:3306/jspdb1";
+			String dbUser = "jspid";
+			String dbPass = "jsppass";
+			Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+
+			// 3단계 - 연결정보를 이용해서 sql구문을 만들고 실행할 객체생성
+			// 조건 id일치 하면 이름 수정
+			String sql = "update member set name=? where id=?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, mb.getName());
+			pstmt.setString(2, mb.getId());
+
+			// 4단계 - 만든 객체 실행 insert,update,delete
+			pstmt.executeUpdate();
+		}
+		catch (Exception e) {
+			// 예외를 잡아서 처리
+			e.printStackTrace();
+		}
+		finally {
+			// 예외상관없이 마무리 작업
+		}
+	}// updateMember()
+
+	public void deleteMember(String id) {
+		try {
+			// 1단계 드라이버 불러오기
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// 2단계 디비연결 jspdb1 jspid jsppass
+			String dbUrl = "jdbc:mysql://localhost:3306/jspdb1";
+			String dbUser = "jspid";
+			String dbPass = "jsppass";
+			Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+			String sql = "delete from member where id=?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			// 4단계 - 만든 객체 실행 insert,update,delete
+			pstmt.executeUpdate();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			// 예외상관없이 마무리 작업
+		}
+	}
+
+	public List getMemberList() {
+		List memberList = new ArrayList();
+		try {
+			// 1단계 드라이버 로더
+			Class.forName("com.mysql.jdbc.Driver");
+
+			// 2단계 디비연결
+			String dbUrl = "jdbc:mysql://localhost:3306/jspdb1";
+			String dbUser = "jspid";
+			String dbPass = "jsppass";
+			Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+
+			// 3단계 - 연결정보를 이용해서 sql구문을 만들고 실행할 객체생성 select
+			String sql = "SELECT * FROM member";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+
+			// 4단계 - 만든 객체 실행 select => 결과 저장 내장객체
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// 한사람의 정보 저장
+				MemberBean mb = new MemberBean();
+				mb.setId(rs.getString("id"));
+				mb.setPass(rs.getString("pass"));
+				mb.setName(rs.getString("name"));
+				mb.setReg_date(rs.getTimestamp("reg_date"));
+				// 배열 한칸에 한사람의 정보 저장
+				memberList.add(mb);
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			// 예외상관없이 마무리 작업
+		}
+		return memberList;
 	}
 
 }// 클래스
