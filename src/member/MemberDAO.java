@@ -94,7 +94,7 @@ public class MemberDAO {
 	public int userCheck(String id, String pass) {
 		int check = -1;
 		try {
-			// 예외가 발생할 명령(디비연동, 외부파일연동, ...
+			// 예외가 발생할 명령(디비연동, 외부파일연동, ....
 
 			// 1단계 드라이버 불러오기
 			Class.forName("com.mysql.jdbc.Driver");
