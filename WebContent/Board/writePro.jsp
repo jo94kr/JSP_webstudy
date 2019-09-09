@@ -30,13 +30,14 @@
 		bb.setPass(pass);
 		bb.setSubject(subject);
 		bb.setContent(content);
+		
 
 		// 디비자바파일 패키지 board 파일이름 BoardDAO
 		// BoardDAO bdao 객체생성
 		BoardDAO bdao = new BoardDAO();
 		// insertBoard() 메서드호출
 		bdao.insertBoard(bb);
-
+		
 		// 글목록 이동 list.jsp 
 		response.sendRedirect("list.jsp");
 	%>

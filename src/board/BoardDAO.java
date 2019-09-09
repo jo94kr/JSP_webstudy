@@ -60,21 +60,25 @@ public class BoardDAO {
 			// 4단계 - 만든 객체 실행 insert
 			// readcount 0 , date ? 대신에 now() mysql시스템날짜시간
 			pstmt.executeUpdate();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			// 예외를 잡아서 처리
 			e.printStackTrace();
-		} finally {
+		}
+		finally {
 			// 예외상관없이 마무리 작업 => 사용한 내장객체 기억장소 정리
 			if (pstmt != null) {
 				try {
 					pstmt.close();
-				} catch (SQLException ex) {
+				}
+				catch (SQLException ex) {
 				}
 			}
 			if (con != null) {
 				try {
 					con.close();
-				} catch (SQLException ex) {
+				}
+				catch (SQLException ex) {
 				}
 			}
 		}
@@ -105,26 +109,31 @@ public class BoardDAO {
 				bb.setReadcount(rs.getInt("readcount"));
 				boardList.add(bb);
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		}
+		finally {
 			// 예외상관없이 마무리 작업
 			if (rs != null) {
 				try {
 					rs.close();
-				} catch (SQLException ex) {
+				}
+				catch (SQLException ex) {
 				}
 			}
 			if (pstmt != null) {
 				try {
 					pstmt.close();
-				} catch (SQLException ex) {
+				}
+				catch (SQLException ex) {
 				}
 			}
 			if (con != null) {
 				try {
 					con.close();
-				} catch (SQLException ex) {
+				}
+				catch (SQLException ex) {
 				}
 			}
 		}
@@ -145,24 +154,29 @@ public class BoardDAO {
 
 			// 4단계 실행
 			pstmt.executeUpdate();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 
-		} finally {
+		}
+		finally {
 			if (rs != null)
 				try {
 					rs.close();
-				} catch (SQLException ex) {
+				}
+				catch (SQLException ex) {
 				}
 			if (pstmt != null)
 				try {
 					pstmt.close();
-				} catch (SQLException ex) {
+				}
+				catch (SQLException ex) {
 				}
 			if (con != null)
 				try {
 					con.close();
-				} catch (SQLException ex) {
+				}
+				catch (SQLException ex) {
 				}
 		}
 	} // updateReadcount()
@@ -197,26 +211,31 @@ public class BoardDAO {
 				bb.setSubject(rs.getString("subject"));
 				bb.setContent(rs.getString("content"));
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		}
+		finally {
 			// 예외상관없이 마무리 작업
 			if (rs != null) {
 				try {
 					rs.close();
-				} catch (SQLException ex) {
+				}
+				catch (SQLException ex) {
 				}
 			}
 			if (pstmt != null) {
 				try {
 					pstmt.close();
-				} catch (SQLException ex) {
+				}
+				catch (SQLException ex) {
 				}
 			}
 			if (con != null) {
 				try {
 					con.close();
-				} catch (SQLException ex) {
+				}
+				catch (SQLException ex) {
 				}
 			}
 		}
