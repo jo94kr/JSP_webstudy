@@ -23,7 +23,7 @@
 	
 		// updateReadcount(num) 조회수 증가 메서드 호출
 		// BoardBean bb = getBoard(num)  num에 해당하는 게시판 글 가져오기
-		BoardBean bb = bdao.getContent(num);
+		BoardBean bb = bdao.getBoard(num);
 
 	%>
 	<table border="1">

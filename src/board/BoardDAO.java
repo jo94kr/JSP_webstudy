@@ -84,6 +84,7 @@ public class BoardDAO {
 		}
 	}// insertBoard()
 
+	// getBoardList()
 	public List getBoardList() {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -181,8 +182,8 @@ public class BoardDAO {
 		}
 	} // updateReadcount()
 
-	// getContent()
-	public BoardBean getContent(int num) {
+	// getBoard()
+	public BoardBean getBoard(int num) {
 		BoardBean bb = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -240,6 +241,150 @@ public class BoardDAO {
 			}
 		}
 		return bb;
-	} // getContent()
+	} // getBoard()
 
+	// checkNum()
+	public int checkNum(BoardBean bb) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int check = -1;
+		try {
+			// 1,2
+			con = getConnection();
+			// 3 sql
+			String sql = "select * from board where num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, bb.getNum());
+			// 4
+			rs = pstmt.executeQuery();
+			// 5
+			if (rs.next()) {
+				if (bb.getPass().equals(rs.getString("pass"))) {
+					check = 1;
+				}
+				else {
+					check = 0;
+				}
+			}
+			else {
+				check = -1;
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if (rs != null)
+				try {
+					rs.close();
+				}
+				catch (SQLException ex) {
+				}
+			if (pstmt != null)
+				try {
+					pstmt.close();
+				}
+				catch (SQLException ex) {
+				}
+			if (con != null)
+				try {
+					con.close();
+				}
+				catch (SQLException ex) {
+				}
+		}
+		return check;
+	}
+
+	// updateBoard()
+	public BoardBean updateBoard(BoardBean bb) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = getConnection();
+
+			String sql = "UPDATE board SET name=?, subject=?, content=? WHERE num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, bb.getName());
+			pstmt.setString(2, bb.getSubject());
+			pstmt.setString(3, bb.getContent());
+			pstmt.setInt(4, bb.getNum());
+			// 4단계 - 만든 객체 실행 insert,update,delete
+			pstmt.executeUpdate();
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			// 예외상관없이 마무리 작업
+			if (rs != null) {
+				try {
+					rs.close();
+				}
+				catch (SQLException ex) {
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				}
+				catch (SQLException ex) {
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				}
+				catch (SQLException ex) {
+				}
+			}
+		}
+		return bb;
+	} // updateBoard()
+
+	public void deleteBoard(BoardBean bb) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+
+			String sql = "DELETE FROM board WHERE num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, bb.getNum());
+			// 4단계 - 만든 객체 실행 insert,update,delete
+			pstmt.executeUpdate();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			// 예외상관없이 마무리 작업
+			if (rs != null) {
+				try {
+					rs.close();
+				}
+				catch (SQLException ex) {
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				}
+				catch (SQLException ex) {
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				}
+				catch (SQLException ex) {
+				}
+			}
+		}
+	}
 }

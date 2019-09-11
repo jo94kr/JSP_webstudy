@@ -1,3 +1,5 @@
+<%@page import="board.BoardDAO"%>
+<%@page import="board.BoardBean"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.DriverManager"%>
@@ -16,45 +18,24 @@
 		int num = Integer.parseInt(request.getParameter("num"));
 		String pass = request.getParameter("pass");
 
-		//1단계 드라이버 가져오기
-		Class.forName("com.mysql.jdbc.Driver");
+		BoardBean bb = new BoardBean();
 
-		//2단계 디비연결
-		String dbUrl = "jdbc:mysql://localhost:3306/jspdb1";
-		String dbUser = "jspid";
-		String dbPass = "jsppass";
-		Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+		// 멤버변수 <= 파라미터 값
+		bb.setNum(num);
+		bb.setPass(pass);
 
-		//3단계 - 연결정보를 이용해서 sql구문을 만들고 실행할 객체생성 select
-		//디비에 id정보가 있는지 조회(가져오기)
-		String sql = "SELECT * FROM board WHERE num=?";
-		PreparedStatement pstmt = con.prepareStatement(sql);
-		pstmt.setInt(1, num);
+		// BoardDAO bdao 객체생성
+		BoardDAO bdao = new BoardDAO();
 
-		//4단계 - 만든 객체 실행   select => 결과 저장 내장객체
-		ResultSet rs = pstmt.executeQuery();
+		// int check = checkNum(bb)
+		int check = bdao.checkNum(bb);
 
-		//5단계 - if 첫행으로 이동 데이터 있으면 true "아이디있음"
-		//             if 폼 비밀번호 디비비밀번호 비교 맞으면  수정 , main.jsp이동
-		//             else  틀리면 "비밀번호틀림" 뒤로이동
-		//      else  데이터 없으면 false "아이디없음"  loginForm.jsp이동
-		if (rs.next()) {
-			out.println("글있음");//아이디있음
-			if (pass.equals(rs.getString("pass"))) {
-				out.println("비밀번호맞음");
-				// 3단계 - 연결정보를 이용해서 sql구문을 만들고 실행할 객체생성 
-				//      조건 id일치 하면 이름 수정
-				sql = "DELETE FROM board WHERE num=?";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, num);
-				//4단계 - 만든 객체 실행   insert,update,delete 
-				pstmt.executeUpdate();
-				//"회원정보삭제"
-				//list.jsp 이동
-				// 이동 list.jsp 
-				response.sendRedirect("list.jsp");
-			} else {
-				out.println("비밀번호틀림");
+		if (check == 1) {
+			bdao.deleteBoard(bb);
+			response.sendRedirect("list.jsp");
+		}
+
+		else if (check == 0) {
 	%>
 	<script>
 		alert("비밀번호틀림");
@@ -62,8 +43,8 @@
 	</script>
 	<%
 		}
-		} else {
-			out.println("글없음");//글없음
+
+		else if (check == -1) {
 	%>
 	<script>
 		alert("글없음");

@@ -214,6 +214,7 @@ public class MemberDAO {
 	// updateMember()
 	public void updateMember(MemberBean mb) {
 		Connection con = null;
+		PreparedStatement pstmt = null;
 		try {
 			// 1단계 드라이버 불러오기
 			// 2단계 디비연결 jspdb1 jspid jsppass
@@ -222,7 +223,7 @@ public class MemberDAO {
 			// 3단계 - 연결정보를 이용해서 sql구문을 만들고 실행할 객체생성
 			// 조건 id일치 하면 이름 수정
 			String sql = "update member set name=? where id=?";
-			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, mb.getName());
 			pstmt.setString(2, mb.getId());
 
